@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 
 export const sessionsRouter = express.Router();
 
-const sessions = JSON.parse(
+export const sessions = JSON.parse(
     await readFile(
         new URL('../data/sessions.json', import.meta.url)
     )

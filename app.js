@@ -8,9 +8,10 @@ import chalk from 'chalk';
 import debug from 'debug';
 import morgan from 'morgan';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import {fileURLToPath} from 'url';
+import {dirname} from 'path';
 import {sessionsRouter} from './src/routers/sessionsRouter.js';
+import {adminRouter} from './src/routers/adminRouter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,16 +27,17 @@ app.use(express.static(path.join(__dirname, '/public/'))); // expose all static 
 // by default index.html is search at '/' request.
 
 // set template view engine to render html pages
-app.set('views','./src/views');
+app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
 // request routing
 
 
 app.use('/sessions', sessionsRouter);
+app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {
-    res.render('index', {title: 'Globo!', data:['a','b','c']});
+    res.render('index', {title: 'Globo!', data: ['a', 'b', 'c']});
 });
 app.get('/test', (req, res) => {
     res.send('Hello from my app!');
