@@ -1,4 +1,5 @@
 import {MongoClient, ObjectId} from 'mongodb';
+import {readFile} from "fs/promises";
 
 
 export function get() {
@@ -15,7 +16,7 @@ export function getBy(id) {
     );
 }
 
-export function insert(sessions) {
+export function insertData() {
     return executeDBCommand(
         (client) => client.db(dbName),
         (db) => db.collection(sessionsCollection).insertMany(sessions)
@@ -24,6 +25,12 @@ export function insert(sessions) {
 
 const dbName = 'globomantics';
 const sessionsCollection = 'sessions';
+
+export const sessions = JSON.parse(
+    await readFile(
+        new URL('../data/sessions.json', import.meta.url)
+    )
+);
 
 function executeDBCommand(resolveDb, dbOp) {
     const url = 'mongodb://root:example@localhost:27017';
