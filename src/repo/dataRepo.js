@@ -1,24 +1,29 @@
-import {MongoClient} from 'mongodb';
+import {MongoClient, ObjectId} from 'mongodb';
 
 
 export function get() {
-
     return executeDBCommand(
         (client) => client.db(dbName),
-        (db) => db.collection(newspapersCollection).find().toArray()
+        (db) => db.collection(sessionsCollection).find().toArray()
+    );
+}
+
+export function getBy(id) {
+    return executeDBCommand(
+        (client) => client.db(dbName),
+        (db) => db.collection(sessionsCollection).findOne({_id: new ObjectId(id)})
     );
 }
 
 export function insert(sessions) {
-
     return executeDBCommand(
         (client) => client.db(dbName),
-        (db) => db.collection(newspapersCollection).insertMany(sessions)
+        (db) => db.collection(sessionsCollection).insertMany(sessions)
     );
 }
 
 const dbName = 'globomantics';
-const newspapersCollection = 'sessions';
+const sessionsCollection = 'sessions';
 
 function executeDBCommand(resolveDb, dbOp) {
     const url = 'mongodb://root:example@localhost:27017';
