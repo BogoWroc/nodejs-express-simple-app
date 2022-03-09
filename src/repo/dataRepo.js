@@ -1,6 +1,14 @@
 import {MongoClient} from 'mongodb';
 
 
+export function get() {
+
+    return executeDBCommand(
+        (client) => client.db(dbName),
+        (db) => db.collection(newspapersCollection).find().toArray()
+    );
+}
+
 export function insert(sessions) {
 
     return executeDBCommand(
