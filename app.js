@@ -12,6 +12,7 @@ import {fileURLToPath} from 'url';
 import {dirname} from 'path';
 import {sessionsRouter} from './src/routers/sessionsRouter.js';
 import {adminRouter} from './src/routers/adminRouter.js';
+import {authRouter} from './src/routers/authRouter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,9 +22,12 @@ const PORT = process.env.PORT || 3000;
 const log = debug('app');
 const app = express();
 
-// middleware
-app.use(morgan('combined')); // register middleware
+// register middleware
+app.use(morgan('combined')); // register logger middleware
 app.use(express.static(path.join(__dirname, '/public/'))); // expose all static resources stored in the public folder
+app.use(express.json()); // for authorization
+app.use(express.urlencoded({extended: false})); // for authorization
+
 // by default index.html is search at '/' request.
 
 // set template view engine to render html pages
@@ -35,6 +39,7 @@ app.set('view engine', 'ejs');
 
 app.use('/sessions', sessionsRouter);
 app.use('/admin', adminRouter);
+app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
     res.render('index', {title: 'Globo!', data: ['a', 'b', 'c']});
