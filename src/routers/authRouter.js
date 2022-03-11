@@ -1,6 +1,6 @@
 import express from 'express';
 import debug from 'debug';
-import {getUserBy, insertData} from '../repo/dataRepo.js';
+import {getUserBy} from '../repo/dataRepo.js';
 
 export const authRouter = express.Router();
 const log = debug('app:authRouter');

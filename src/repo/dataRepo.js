@@ -2,21 +2,21 @@ import {MongoClient, ObjectId} from 'mongodb';
 import {readFile} from "fs/promises";
 
 
-export function get() {
+export function getSessions() {
     return executeDBCommand(
         (client) => client.db(dbName),
         (db) => db.collection(sessionsCollection).find().toArray()
     );
 }
 
-export function getBy(id) {
+export function getSessionBy(id) {
     return executeDBCommand(
         (client) => client.db(dbName),
         (db) => db.collection(sessionsCollection).findOne({_id: new ObjectId(id)})
     );
 }
 
-export function insertData() {
+export function insertSessionsData() {
     return executeDBCommand(
         (client) => client.db(dbName),
         (db) => db.collection(sessionsCollection).insertMany(sessions)

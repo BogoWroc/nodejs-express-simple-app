@@ -1,6 +1,6 @@
 import express from 'express';
 import debug from 'debug';
-import {get, getBy} from '../repo/dataRepo.js';
+import {getSessions, getSessionBy} from '../repo/dataRepo.js';
 
 export const sessionsRouter = express.Router();
 const log = debug('app:sessionRouter');
@@ -8,7 +8,7 @@ const log = debug('app:sessionRouter');
 
 sessionsRouter.route('/')
     .get((req, res) => {
-        get()
+        getSessions()
             .then((sessions) => {
                     res.render('sessions', {
                         sessions,
@@ -20,7 +20,7 @@ sessionsRouter.route('/')
 sessionsRouter.route('/:id')
     .get((req, res) => {
         const id = req.params.id;
-        getBy(id)
+        getSessionBy(id)
             .then(session =>{
                 res.render('session', { session });
             })
