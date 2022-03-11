@@ -1,5 +1,6 @@
 import passport from 'passport';
 import {Strategy} from 'passport-local';
+import {getUserByName} from "../../repo/dataRepo.js";
 
 export function localStrategy() {
 
@@ -7,7 +8,14 @@ export function localStrategy() {
         usernameField: "username", // these field names are taken from login form
         passwordField: "password"
     }, (username, password, done) => {
-        const user = {username, password, 'name': 'John'}; //here we have to connect with db or ldap to authenticate the user and then prepare user object
-        done(null, user);
+        getUserByName(username).then(user=>{
+            if(user && user.password === password){
+                done(null, user);
+            } else {
+                done(null, false);
+            }
+        }).catch(
+            e=>done(e, false));
+
     })) // this method is responsible for user authentication
 }

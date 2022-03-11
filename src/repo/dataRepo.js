@@ -37,6 +37,14 @@ export function getUserBy(id) {
         (db) => db.collection(users).findOne({_id: id})
     );
 }
+
+export function getUserByName(username) {
+
+    return executeDBCommand(
+        (client) => client.db(dbName),
+        (db) => db.collection(users).findOne({username})
+    );
+}
 const dbName = 'globomantics';
 
 const sessionsCollection = 'sessions';
