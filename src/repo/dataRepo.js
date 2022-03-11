@@ -23,8 +23,24 @@ export function insertData() {
     );
 }
 
+export function addUser(user){
+
+    return executeDBCommand(
+        (client) => client.db(dbName),
+        (db) => db.collection(users).insertOne(user)
+    );
+}
+export function getUserBy(id) {
+
+    return executeDBCommand(
+        (client) => client.db(dbName),
+        (db) => db.collection(users).findOne({_id: id})
+    );
+}
 const dbName = 'globomantics';
+
 const sessionsCollection = 'sessions';
+const users = 'users';
 
 export const sessions = JSON.parse(
     await readFile(

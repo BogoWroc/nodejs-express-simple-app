@@ -1,10 +1,26 @@
 import express from 'express';
 import debug from 'debug';
-import {insertData} from '../repo/dataRepo.js';
+import {getUserBy, insertData} from '../repo/dataRepo.js';
 
 export const authRouter = express.Router();
 const log = debug('app:authRouter');
+import {addUser} from '../repo/dataRepo.js';
 
 authRouter.post('/signUp', (req, res) => {
-   res.json(req.body);
+    const {username, password} = req.body;
+    const user = {username, password}
+    addUser(user)
+        .then((results) => {
+            log(results);
+            getUserBy(results.insertedId).then(user=>{
+                log(user);
+                req.login(user, () => {
+                    res.redirect('/auth/profile');
+                });
+            }).catch(e => log(e));
+        }).catch(e => log(e))
+});
+
+authRouter.get('/profile', (req, res) => {
+    res.json(req.user);
 });

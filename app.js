@@ -8,6 +8,11 @@ import chalk from 'chalk';
 import debug from 'debug';
 import morgan from 'morgan';
 import path from 'path';
+import passport from 'passport'; // it is responsible for managing user in the session, cookies, etc.
+import {passportConfig} from "./src/config/passport.js";
+import cookieParser from 'cookie-parser';
+import session from 'cookie-session'
+
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
 import {sessionsRouter} from './src/routers/sessionsRouter.js';
@@ -25,8 +30,12 @@ const app = express();
 // register middleware
 app.use(morgan('combined')); // register logger middleware
 app.use(express.static(path.join(__dirname, '/public/'))); // expose all static resources stored in the public folder
-app.use(express.json()); // for authorization
+app.use(express.json()); // for authorization, body parser
 app.use(express.urlencoded({extended: false})); // for authorization
+app.use(cookieParser());
+app.use(session({secret: 'globomantics'}));
+
+passportConfig(app);
 
 // by default index.html is search at '/' request.
 
