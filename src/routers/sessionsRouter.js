@@ -5,6 +5,13 @@ import {getSessions, getSessionBy} from '../repo/dataRepo.js';
 export const sessionsRouter = express.Router();
 const log = debug('app:sessionRouter');
 
+sessionsRouter.use((req,res, next)=>{
+    if(req.user){
+        next();
+    }else {
+        res.redirect('/auth/signIn');
+    }
+});
 
 sessionsRouter.route('/')
     .get((req, res) => {
