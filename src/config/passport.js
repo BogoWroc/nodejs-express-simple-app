@@ -4,6 +4,7 @@ import {localStrategy} from "./strategies/local.strategy.js";
 export function passportConfig(app){
     app.use(passport.initialize());
     app.use(passport.session());
+    localStrategy();
 
     passport.serializeUser((user, done)=>{
         done(null, user);
